@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.movement.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_gallery"
+        android:name="com.example.movement.ui.gallery.myProfileFrag"
+        android:label="My Profile"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="com.example.movement.ui.slideshow.SlideshowFragment"
+        android:label="Add Hostel"
+        tools:layout="@layout/fragment_slideshow" />
+    <fragment
+        android:id="@+id/nav_complaint"
+        android:name="com.example.movement.ui.ComplaintManage.ComplaintManagement"
+        android:label="Complaint Mangement"
+        tools:layout="@layout/fragment_complaint_management" />
+
+    <fragment
+        android:id="@+id/nav_assign_complain"
+        android:name="com.example.movement.ui.ComplainAssign"
+        android:label="Assign Complaint Mangement"
+        tools:layout="@layout/fragment_complain_assign" />
+    <fragment
+        android:id="@+id/nav_outpass"
+        android:name="com.example.movement.ui.outpass.Outpass"
+        android:label="Outpass"
+        tools:layout="@layout/fragment_outpass" />
+</navigation>

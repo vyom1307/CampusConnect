@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Main glossy gradient -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:endColor="#CD5A1C"
+            android:startColor="#F1CA07"
+            android:type="linear" />
+            <corners android:radius="30dp" />
+
+        </shape>
+    </item>
+
+    <!-- Glossy overlay -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="135"
+                android:startColor="#4C9175"
+            android:endColor="#00FFFFFF"
+            android:type="linear" />
+            <corners android:radius="30dp" />
+            />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <corners android:radius="30dp" />
+            <stroke
+                android:width="2dp"
+                android:color="@android:color/white" />
+        </shape>
+    </item>
+
+</layer-list>

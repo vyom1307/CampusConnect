@@ -1,0 +1,32 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    android:background="@drawable/border"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/complaintType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Complaint Type"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/complaintText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Complaint details"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/complaintStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status: Ongoing"
+        android:textSize="12sp"
+        />
+</LinearLayout>

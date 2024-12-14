@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.slideshow.SlideshowFragment">
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="300dp"
+        android:layout_height="35dp"
+        android:layout_centerInParent="true"
+android:background="@drawable/box"
+
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="94dp"
+        android:layout_marginEnd="56dp"
+        android:padding="5dp"
+        android:textColor="#80AAAAAA"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="13dp"
+
+
+        android:layout_marginBottom="18dp"
+        android:background="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        tools:layout_editor_absoluteX="29dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="32dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_marginEnd="37dp"
+        android:textColor="@color/white"
+        android:background="@drawable/box"
+        android:text="Available Single Rooms"
+        android:textColorHint="#80AAAAAA"
+        app:layout_constraintEnd_toStartOf="@+id/textView5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+
+    <TextView
+        android:id="@+id/sing_cap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="37dp"
+        android:background="@drawable/box"
+
+        android:layout_marginTop="32dp"
+        android:padding="5dp"
+        android:textColor="@color/white"
+
+        android:hint="0 "
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="30dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+
+        android:background="@drawable/box"
+
+android:textColor="@color/white"
+        android:text="Available Double Rooms"
+        android:textColorHint="#80AAAAAA"
+        app:layout_constraintEnd_toStartOf="@+id/doubl_Cap"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/doubl_Cap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="17dp"
+
+        android:padding="5dp"
+        android:background="@drawable/box"
+        android:hint="0 "
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/sing_cap" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+
+        android:layout_marginBottom="13dp"
+        android:background="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/stu_name"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
+        android:id="@+id/stu_name"
+        android:layout_marginEnd="55dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="27dp"
+
+        android:hint="Student Name"
+        android:textColorHint="#80151212"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <EditText
+        android:id="@+id/rollno"
+        android:layout_marginEnd="55dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="9dp"
+
+        android:textColorHint="#80151212"
+        android:textColor="@color/white"
+        android:hint="Student Roll No"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stu_name" />
+
+    <EditText
+        android:id="@+id/roomno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="55dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="15dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="13dp"
+        android:hint="Student Room"
+
+        android:textColorHint="#80151212"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rollno" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="18dp"
+        android:background="#000000"
+        android:layout_marginBottom="18dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+
+        app:layout_constraintTop_toBottomOf="@+id/roomno"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/selectCsvButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="Select CSV"
+        app:cornerRadius="30dp"
+        android:backgroundTint="@color/brown"
+        app:strokeColor="#FFFFFF"
+        app:strokeWidth="1dp"
+        android:padding="15dp"
+        android:textSize="15dp"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cornerRadius="30dp"
+        android:backgroundTint="#CAA66A"
+        app:strokeColor="#FFFFFF"
+        app:strokeWidth="1dp"
+
+        android:layout_marginTop="52dp"
+        android:padding="15sp"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:text="save"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectCsvButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

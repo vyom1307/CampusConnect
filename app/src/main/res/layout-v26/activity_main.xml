@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="#040823"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:alpha="0.90"
+    tools:context=".MainActivity">
+
+
+
+
+
+                <!-- Profile Picture -->
+
+
+    <ImageView
+        android:id="@+id/profilePic"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+
+        android:layout_marginTop="28dp"
+
+        android:background="#00231717"
+        android:src="@drawable/logo2_2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:layout_marginTop="13dp"
+        android:autoSizeMaxTextSize="35sp"
+        android:autoSizeMinTextSize="30sp"
+        android:autoSizeStepGranularity="5sp"
+        android:autoSizeTextType="uniform"
+        android:fontFamily="@font/dot"
+
+        android:gravity="center"
+        android:maxLines="1"
+
+        android:text="CAMPUS CONNECT"
+        android:textColor="#FFFFFF"
+        android:textSize="35sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profilePic" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="320dp"
+            android:layout_height="250dp"
+            android:layout_marginStart="95dp"
+            android:layout_marginTop="23dp"
+            android:layout_marginEnd="106dp"
+            android:alpha="0.75"
+            android:background="@drawable/glossy_blue_background"
+            android:foregroundGravity="center_horizontal"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="20dp"
+            android:outlineAmbientShadowColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:background="@drawable/borderonly">
+
+                <EditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="52dp"
+                    android:layout_marginTop="112dp"
+                    android:layout_marginEnd="35dp"
+
+                    android:hint="Username"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="5dp"
+                    android:textColor="@color/black"
+
+                    android:textColorHint="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="124dp"
+                    android:src="@drawable/user"
+                    app:layout_constraintEnd_toStartOf="@+id/username"
+                    app:layout_constraintHorizontal_bias="0.793"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="13dp"
+                    android:background="@color/white"
+                    android:paddingStart="20dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="30dp"
+                    android:paddingEnd="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/gSign" />
+
+                <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+
+                    android:layout_marginStart="18dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/vecteezy_padlock_lock_icon_design_concept_13705561"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/username" />
+
+                <EditText
+                    android:id="@+id/passwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="52dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="35dp"
+
+                    android:hint="Password"
+
+                    android:paddingLeft="8dp"
+                    android:paddingRight="5dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/username" />
+
+                <ImageView
+                    android:id="@+id/gSign"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+
+                    android:layout_marginTop="16dp"
+
+                    android:clickable="true"
+                    android:src="@drawable/google_logo"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/getStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="76dp"
+            android:layout_marginTop="52dp"
+            android:layout_marginEnd="66dp"
+
+            android:backgroundTint="#BEA38E"
+
+            android:elevation="20dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center_horizontal"
+            android:padding="15dp"
+            android:text="Get Started"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:cornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="@+id/cardView"
+            app:layout_constraintStart_toStartOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            app:strokeColor="#FFFFFF"
+            app:strokeWidth="1dp" />
+
+
+
+
+
+
+    <FrameLayout
+
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+
+
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

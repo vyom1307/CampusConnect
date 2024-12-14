@@ -1,0 +1,28 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Movement" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your dark theme here. -->
+        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    </style>
+    <style name="Theme.Movement.MaterialComponents" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Set default background color for the app -->
+        <item name="android:windowBackground">#A4C9E6</item>
+
+        <!-- Customize the color for action bar -->
+        <item name="colorPrimary">#040823</item> <!-- for ActionBar background -->
+        <item name="colorPrimaryDark">#040823</item> <!-- status bar color (if needed) -->
+       <!-- highlight color for widgets like buttons -->
+        <item name="android:fontFamily">@font/park</item>
+        <!-- Set text color for title in the ActionBar -->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="background">@null</item>
+    </style>
+    <style name="CustomChip" parent="Widget.MaterialComponents.Chip.Choice">
+
+        <item name="chipBackgroundColor">@drawable/chip_selec</item>
+        <item name="android:textColor">@drawable/text_color</item>
+        <item name="android:strokeColor">#000000</item>
+        <item name="chipStrokeColor">#1F4567</item>
+        <item name="chipStrokeWidth">2dp</item>
+    </style>
+</resources>
