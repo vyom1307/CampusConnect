@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.movement.model.UserDTO;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,6 +29,8 @@ public class AddName extends Fragment {
     private EditText name;
     private FirebaseAuth auth;
     private FirebaseFirestore firestore;
+
+    private SessionManagement sessionManagement;
 
 
 
@@ -57,6 +60,8 @@ public class AddName extends Fragment {
         String Name=name.getText().toString();
 
         FirebaseUser currUser=auth.getCurrentUser();
+
+        UserDTO user= sessionManagement.getUser();
         if(currUser!=null&&!Name.isEmpty()){
             HashMap<String,String>map=new HashMap<>();
             map.put("Name",Name);
@@ -68,7 +73,7 @@ public class AddName extends Fragment {
                 // Navigate to the next screen or update the UI
                         if (getActivity() instanceof MainActivity) {
                             MainActivity mainActivity = (MainActivity) getActivity();
-                            mainActivity.updateUI(currUser,map.get("role"));
+                            mainActivity.updateUI(user,map.get("role"));
                         }
             }).addOnFailureListener(e -> {
                 Toast.makeText(getActivity(), "Failed to save user details.", Toast.LENGTH_SHORT).show();
@@ -76,4 +81,5 @@ public class AddName extends Fragment {
             name.setText("");
         }
     }
+
 }

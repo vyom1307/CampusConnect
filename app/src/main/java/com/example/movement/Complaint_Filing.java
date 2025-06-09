@@ -1,6 +1,7 @@
 package com.example.movement;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -13,6 +14,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.LiveData;
 
+import com.example.movement.model.Complaint;
+import com.example.movement.model.RetrofitInstance;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -21,9 +24,16 @@ import com.example.movement.model.studentData;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Complaint_Filing extends AppCompatActivity {
 
@@ -83,6 +93,12 @@ public class Complaint_Filing extends AppCompatActivity {
                             submit.setOnClickListener(view -> {
                                 String issue_text = issue.getText().toString().trim();
                                 if (!issue_text.isEmpty()) {
+                                    Complaint com=new Complaint(null,type,issue_text,roll.getText().toString(),room.getText().toString(),"Ongoing",user.getDisplayName());
+                                    fileComplaint(com);
+
+
+
+
                                     Map<String, String> complaint = new HashMap<>();
                                     complaint.put("Roll", roll.getText().toString());
                                     complaint.put("email", email);
@@ -109,5 +125,36 @@ public class Complaint_Filing extends AppCompatActivity {
                     })
                     .addOnFailureListener(e -> Toast.makeText(this, "Error fetching hostel", Toast.LENGTH_SHORT).show());
         });
+    }
+
+    private void fileComplaint(Complaint com) {
+        FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String idToken = task.getResult().getToken();
+
+                        VerifyApi authService = RetrofitInstance.getAuthService();
+
+                        Call<ResponseBody> call = authService.registerComplaint("Bearer " + idToken, com);
+                        call.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                if(response.isSuccessful()){
+                                    Toast.makeText(Complaint_Filing.this, "Complaint Registered Mysql", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                Toast.makeText(Complaint_Filing.this, "Complaint FAILED Mysql", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+
+                    } else {
+                        Log.e("FIREBASE", "ID token failed: ", task.getException());
+                    }
+                });
     }
 }

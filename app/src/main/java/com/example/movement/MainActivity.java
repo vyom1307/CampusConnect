@@ -2,7 +2,6 @@ package com.example.movement;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
@@ -13,37 +12,29 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.credentials.CreatePublicKeyCredentialResponse;
-import androidx.credentials.Credential;
-import androidx.credentials.CredentialManager;
-import androidx.credentials.GetCredentialRequest;
-import androidx.fragment.app.FragmentManager;
 
-import com.example.movement.R;
+import com.example.movement.model.RetrofitInstance;
+import com.example.movement.model.UserDTO;
 import com.google.android.gms.auth.api.identity.BeginSignInRequest;
 import com.google.android.gms.auth.api.identity.Identity;
 import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,12 +52,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
+
         if(mAuth.getCurrentUser()!=null){
-            checkUserInFirestore(mAuth.getCurrentUser());
+            Log.d("SUCCESS", "User: " +mAuth.getCurrentUser().getEmail());
+            checkUserInMysql(mAuth.getCurrentUser());
+           // checkUserInFirestore(mAuth.getCurrentUser());
         }
 
 
-        Animation rotateAnimation = AnimationUtils.loadAnimation(this, R.drawable.border_anim);
+        //Animation rotateAnimation = AnimationUtils.loadAnimation(this, R.drawable.border_anim);
         ImageView logo=findViewById(R.id.profilePic);
         //logo.startAnimation(rotateAnimation);
 
@@ -86,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Initialize fragment container
         fragmentContainer = findViewById(R.id.fragment_container);
-        loginLayout = findViewById(R.id.constraint);
+        loginLayout = findViewById(R.id.main);
 
         // Find the sign-in ImageView by ID
 
@@ -100,19 +94,55 @@ public class MainActivity extends AppCompatActivity {
                         BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
                                 .setSupported(true)
                                 .setFilterByAuthorizedAccounts(false)
-                                .setServerClientId("764849961356-68ogp149g75n7vhhrt1uk5n1bahgbuvn.apps.googleusercontent.com") // Replace with your actual server client ID
+                                .setServerClientId("764849961356-68ogp149g75n7vhhrt1uk5n1bahgbuvn.apps.googleusercontent.com")
                                 .build())
                 .build();
 
         // Set up click listener for sign-in button
         signIn.setOnClickListener(v -> {
-            // Start sign-in process
+
             if (vibe != null) {
                 vibe.vibrate(50);
             }
             startSignIn();
         });
     }
+
+    private void checkUserInMysql(FirebaseUser currentUser) {
+        currentUser.getIdToken(true)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String idToken = task.getResult().getToken();
+
+                        VerifyApi authService = RetrofitInstance.getAuthService();
+
+                        Call<UserDTO> call = authService.verifyToken("Bearer " + idToken);
+                        call.enqueue(new Callback<UserDTO>() {
+                            @Override
+                            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+                                if (response.isSuccessful()) {
+                                    UserDTO user = response.body();
+                                    Toast.makeText(MainActivity.this, "done", Toast.LENGTH_SHORT).show();
+                                    Log.d("SUCCESS", "User: " + user.getEmail() + ", Role: " + user.getRole());
+                                    updateUI(user,user.getRole());
+                                    // TODO: update UI based on role
+                                } else {
+                                    Log.e("ERROR", "Verification failed: " + response.code());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<UserDTO> call, Throwable t) {
+                                Log.e("ERROR", "Network error", t);
+                            }
+                        });
+
+                    } else {
+                        Log.e("FIREBASE", "ID token failed: ", task.getException());
+                    }
+                });
+    }
+
 
     // Method to start sign-in process
     private void startSignIn() {
@@ -133,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
             result -> {
                 if (result.getResultCode() == RESULT_OK) {
                     try {
-                        // Retrieve credential
+
                         SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(result.getData());
                         String idToken = credential.getGoogleIdToken();
                         String email = credential.getId();
@@ -148,18 +178,18 @@ public class MainActivity extends AppCompatActivity {
                                 mAuth.signInWithCredential(firebaseCredential)
                                         .addOnCompleteListener(this, task -> {
                                             if (task.isSuccessful()) {
-                                                // Sign-in success, update UI
+
                                                 FirebaseUser user = mAuth.getCurrentUser();
 
-                                                // Optionally, update the UI
-                                                checkUserInFirestore(user);
+                                                checkUserInMysql(user);
+                                                //checkUserInFirestore(user);
 
                                             } else {
                                                 // Sign-in failed
                                                 Log.w(TAG, "Firebase sign-in failed", task.getException());
                                                 Toast.makeText(this, "Firebase sign-in failed.", Toast.LENGTH_SHORT).show();
                                                 // Optionally, handle errors
-                                                updateUI(null, null);
+                                               // updateUI(null, null);
                                             }
                                         });
                             }else{
@@ -183,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     String role=document.getString("role");
-                    updateUI(user,role);
+                    //updateUI(user,role);
                 }
                 else{
                     Log.d(TAG, "User does not exist in Firestore.");
@@ -214,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void updateUI(FirebaseUser user,String role){
+    void updateUI(UserDTO user, String role){
 
         if(user!=null){
 

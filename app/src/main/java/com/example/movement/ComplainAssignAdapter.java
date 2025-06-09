@@ -75,53 +75,53 @@ public class ComplainAssignAdapter extends RecyclerView.Adapter<ComplainAssignAd
                 .setMessage("Mark this complaint as 'Completed'?")
                 .setPositiveButton("Yes", (dialog, which) -> {
                     // Change the status in Firestore and update the UI
-                    updateComplaintStatus(complaint);
+                  //  updateComplaintStatus(complaint);
                 })
                 .setNegativeButton("No", null)
                 .show();
     }
     // Method to update complaint status
-    private void updateComplaintStatus(Complaint complaint) {
-        // Get Firebase Firestore instance
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        studentRepository repo = new studentRepository();
-        LiveData<studentData> data = repo.getStudent(user.getEmail());
+//    private void updateComplaintStatus(Complaint complaint) {
+//        // Get Firebase Firestore instance
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        FirebaseFirestore db = FirebaseFirestore.getInstance();
+//        studentRepository repo = new studentRepository();
+//        LiveData<studentData> data = repo.getStudent(user.getEmail());
+//
+//
+//        data.observe(lifecycleOwner, studentData -> {
+//            String hostelname = studentData.getHostel();
+//
+//            if (studentData != null) {
+//                // Update the complaint's status in Firestore
+//                db.collection("hostel") // Using the fetched hostel name
+//                        .get()
+//                        .addOnSuccessListener(queryDocumentSnapshots -> {
+//                            if (!queryDocumentSnapshots.isEmpty()) {
+//                                DocumentReference hostelDocRef = queryDocumentSnapshots.getDocuments().get(0).getReference();
+//
+//                                DocumentReference complaintRef = hostelDocRef
+//                                        .collection("complaints")
+//                                        .document(complaint.getComplaintId());
+//
+//                                complaintRef.update("status", "Assign")
+//                                        .addOnSuccessListener(aVoid -> {
+//                                            // Update the status in the local list and notify the adapter
+//                                            complaint.setStatus("Assign");
+//                                            notifyDataSetChanged();  // Refresh the RecyclerView
+//                                            Toast.makeText(context, "Complaint status updated", Toast.LENGTH_SHORT).show();
+//                                        })
+//                                        .addOnFailureListener(e -> {
+//                                            Toast.makeText(context, "Failed to update complaint status", Toast.LENGTH_SHORT).show();
+//                                        });
+//                            }
+//                        });
+//
+//            }
+//        });
+//
 
-
-        data.observe(lifecycleOwner, studentData -> {
-            String hostelname = studentData.getHostel();
-
-            if (studentData != null) {
-                // Update the complaint's status in Firestore
-                db.collection("hostel") // Using the fetched hostel name
-                        .get()
-                        .addOnSuccessListener(queryDocumentSnapshots -> {
-                            if (!queryDocumentSnapshots.isEmpty()) {
-                                DocumentReference hostelDocRef = queryDocumentSnapshots.getDocuments().get(0).getReference();
-
-                                DocumentReference complaintRef = hostelDocRef
-                                        .collection("complaints")
-                                        .document(complaint.getComplaintId());
-
-                                complaintRef.update("status", "Assign")
-                                        .addOnSuccessListener(aVoid -> {
-                                            // Update the status in the local list and notify the adapter
-                                            complaint.setStatus("Assign");
-                                            notifyDataSetChanged();  // Refresh the RecyclerView
-                                            Toast.makeText(context, "Complaint status updated", Toast.LENGTH_SHORT).show();
-                                        })
-                                        .addOnFailureListener(e -> {
-                                            Toast.makeText(context, "Failed to update complaint status", Toast.LENGTH_SHORT).show();
-                                        });
-                            }
-                        });
-
-            }
-        });
-
-
-    }
+  //  }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             TextView complaintText;

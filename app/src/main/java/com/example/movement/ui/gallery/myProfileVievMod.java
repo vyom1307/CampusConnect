@@ -9,6 +9,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.movement.SessionManagement;
 import com.example.movement.model.studentRepository;
 import com.example.movement.model.studentData;
 
@@ -23,6 +25,8 @@ public class myProfileVievMod extends AndroidViewModel {
     private final LiveData<studentData> studentLiveData;
 
     private final FirebaseUser user;
+    //did not change the firebase to mysql because i end profile pic and to save in mysql the profile ic i need firebae clod so why
+    private SessionManagement sessionManagement;
     private final MutableLiveData<String> userName;
     private final MutableLiveData<String> userEmail;
     private final MutableLiveData<Uri> userProfilePic;
@@ -32,6 +36,7 @@ public class myProfileVievMod extends AndroidViewModel {
         super(application);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
+
         assert user != null;
         studentLiveData= repo.getStudent(user.getEmail());
 

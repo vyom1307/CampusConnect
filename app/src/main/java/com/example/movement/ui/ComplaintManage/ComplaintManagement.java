@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movement.Home;
 import com.example.movement.MainActivity;
+import com.example.movement.VerifyApi;
 import com.example.movement.model.Complaint;
+import com.example.movement.model.RetrofitInstance;
+import com.example.movement.model.UserDTO;
 import com.example.movement.model.studentData;
 import com.bumptech.glide.Glide;
 import com.example.movement.R;
@@ -49,6 +53,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ComplaintManagement extends Fragment {
 
@@ -133,73 +142,124 @@ public class ComplaintManagement extends Fragment {
         studentRepository repo = new studentRepository();
         LiveData<studentData> data = repo.getStudent(user.getEmail());
 
-        // Observe the LiveData for student info
-        data.observe(getViewLifecycleOwner(), studentData -> {
-            String hostelname = studentData.getHostel();
-            // Once the student data is available
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
+        data.observe(getViewLifecycleOwner(),studentData -> {
+            FirebaseAuth.getInstance().getCurrentUser().getIdToken(true)
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            String idToken = task.getResult().getToken();
 
-            // Correctly query the hostel document using whereEqualTo and add success listener
-            db.collection("hostel").whereEqualTo("Name", hostelname)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        if (!queryDocumentSnapshots.isEmpty()) {
-                            // Get the first matching hostel document reference
-                            CollectionReference complaintsRef = queryDocumentSnapshots.getDocuments()
-                                    .get(0).getReference().collection("complaints");
+                            VerifyApi authService = RetrofitInstance.getAuthService();
 
-                            // Query complaints for the current student
-                            complaintsRef.whereEqualTo("email", user.getEmail())
-                                    .get()
-                                    .addOnSuccessListener(complaintSnapshots -> {
-                                        if (!complaintSnapshots.isEmpty()) {
+                            Call<List<Complaint>> call = authService.getComplaints("Bearer " + idToken);
+                            call.enqueue(new Callback<List<Complaint>>() {
+                                @Override
+                                public void onResponse(Call<List<Complaint>> call, Response<List<Complaint>> response) {
+                                    if (response.isSuccessful()) {
+                                        List<Complaint> complaintList = response.body();
+                                        List<Complaint> ongoingComplaints = new ArrayList<>();
+                                        List<Complaint> pastComplaints = new ArrayList<>();
+                                        assert complaintList != null;
+                                        for(Complaint c:complaintList){
+                                            System.out.println(c.getStatus());
 
+                                            if(c.getStatus().equals("Ongoing"))
+                                                ongoingComplaints.add(c);
+                                            else pastComplaints.add(c);
 
-                                            List<Complaint> ongoingComplaints = new ArrayList<>();
-                                            List<Complaint> pastComplaints = new ArrayList<>();
-
-
-
-                                            for (QueryDocumentSnapshot document : complaintSnapshots) {
-                                                // Extract complaint data
-                                                String complaintId = document.getId();
-                                                String complaintType = document.getString("complaintType");
-                                                String complaintText = document.getString("complaintText");
-                                                String roll = document.getString("Roll");
-                                                String room = document.getString("room");
-                                                String status = document.getString("status");
-                                                String name= user.getDisplayName();
-
-                                                // Determine if it's ongoing or past based on your criteria
-                                                assert status != null;
-                                                boolean isOngoing = status.equals("Ongoing"); // Adjust based on your logic
-
-                                                Complaint complaint = new Complaint(complaintId, complaintType, complaintText, roll, room,status,name);
-                                                if (isOngoing) {
-                                                    ongoingComplaints.add(complaint);
-                                                } else {
-                                                    pastComplaints.add(complaint);
-                                                }
-                                            }
-
-                                            // Pass the complaints lists to display them
-                                            displayComplaints(ongoingComplaints, pastComplaints);
-                                        } else {
-                                            Toast.makeText(this.getContext(), "No complaints found for you", Toast.LENGTH_SHORT).show();
                                         }
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        // Handle errors
-                                        Toast.makeText(this.getContext(), "Error fetching complaints", Toast.LENGTH_SHORT).show();
-                                    });
+                                        displayComplaints(ongoingComplaints, pastComplaints);
+                                        // Now you can use this data in your UI
+                                    } else {
+                                        Log.e("API", "Response not successful: " + response.code());
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<Complaint>> call, Throwable t) {
+                                    Log.e("API", "Failure: " + t.getMessage());
+                                }
+                            });
+
                         } else {
-                            Toast.makeText(this.getContext(), "No hostel found with the name " + hostelname, Toast.LENGTH_SHORT).show();
+                            Log.e("FIREBASE", "ID token failed: ", task.getException());
                         }
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(this.getContext(), "Error fetching hostel", Toast.LENGTH_SHORT).show();
                     });
+
         });
+
+
+
+
+
+
+
+        // Observe the LiveData for student info
+//        data.observe(getViewLifecycleOwner(), studentData -> {
+//            String hostelname = studentData.getHostel();
+//            // Once the student data is available
+//            FirebaseFirestore db = FirebaseFirestore.getInstance();
+//
+//            // Correctly query the hostel document using whereEqualTo and add success listener
+//            db.collection("hostel").whereEqualTo("Name", hostelname)
+//                    .get()
+//                    .addOnSuccessListener(queryDocumentSnapshots -> {
+//                        if (!queryDocumentSnapshots.isEmpty()) {
+//                            // Get the first matching hostel document reference
+//                            CollectionReference complaintsRef = queryDocumentSnapshots.getDocuments()
+//                                    .get(0).getReference().collection("complaints");
+//
+//                            // Query complaints for the current student
+//                            complaintsRef.whereEqualTo("email", user.getEmail())
+//                                    .get()
+//                                    .addOnSuccessListener(complaintSnapshots -> {
+//                                        if (!complaintSnapshots.isEmpty()) {
+//
+//
+//                                            List<Complaint> ongoingComplaints = new ArrayList<>();
+//                                            List<Complaint> pastComplaints = new ArrayList<>();
+//
+//
+//
+//                                            for (QueryDocumentSnapshot document : complaintSnapshots) {
+//                                                // Extract complaint data
+//                                                String complaintId = document.getId();
+//                                                String complaintType = document.getString("complaintType");
+//                                                String complaintText = document.getString("complaintText");
+//                                                String roll = document.getString("Roll");
+//                                                String room = document.getString("room");
+//                                                String status = document.getString("status");
+//                                                String name= user.getDisplayName();
+//
+//                                                // Determine if it's ongoing or past based on your criteria
+//                                                assert status != null;
+//                                                boolean isOngoing = status.equals("Ongoing"); // Adjust based on your logic
+//
+//                                                Complaint complaint = new Complaint(complaintId, complaintType, complaintText, roll, room,status,name);
+//                                                if (isOngoing) {
+//                                                    ongoingComplaints.add(complaint);
+//                                                } else {
+//                                                    pastComplaints.add(complaint);
+//                                                }
+//                                            }
+//
+//                                            // Pass the complaints lists to display them
+//                                            displayComplaints(ongoingComplaints, pastComplaints);
+//                                        } else {
+//                                            Toast.makeText(this.getContext(), "No complaints found for you", Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    })
+//                                    .addOnFailureListener(e -> {
+//                                        // Handle errors
+//                                        Toast.makeText(this.getContext(), "Error fetching complaints", Toast.LENGTH_SHORT).show();
+//                                    });
+//                        } else {
+//                            Toast.makeText(this.getContext(), "No hostel found with the name " + hostelname, Toast.LENGTH_SHORT).show();
+//                        }
+//                    })
+//                    .addOnFailureListener(e -> {
+//                        Toast.makeText(this.getContext(), "Error fetching hostel", Toast.LENGTH_SHORT).show();
+//                    });
+//        });
 
 
 
